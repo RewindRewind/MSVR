@@ -156,7 +156,8 @@ function draw() {
     );
     gl.uniformMatrix4fv(shProgram.iModelViewMatrix, false, bPMat2);
     backPlane.Draw();
-    gl.uniformMatrix4fv(shProgram.iModelViewMatrix, false, matAccum1);
+    let tangibleMat = m4.multiply(m4.axisRotation([0, 1, 0], -0.5 * Math.PI * accelerometer.x * 0.1), m4.axisRotation([1, 0, 0], 0.5 * Math.PI * accelerometer.y * 0.1));
+    gl.uniformMatrix4fv(shProgram.iModelViewMatrix, false, m4.multiply(matAccum1, tangibleMat));
     gl.bindTexture(gl.TEXTURE_2D, texture);
     cam.Param();
     cam.ApplyLeftFrustum();
@@ -506,3 +507,10 @@ function CreateWebCamTexture() {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     return textureID;
 }
+const accelerometer = new Accelerometer({ frequency: 60 });
+accelerometer.addEventListener("reading", () => {
+    console.log(`Acceleration along the X-axis ${accelerometer.x}`);
+    console.log(`Acceleration along the Y-axis ${accelerometer.y}`);
+    console.log(`Acceleration along the Z-axis ${accelerometer.z}`);
+});
+accelerometer.start();
