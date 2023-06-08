@@ -67,10 +67,10 @@ void main() {
     v_texcoord = vec2(texture2.x,texture2.y);
     vec4 vertPos4 = ModelViewMatrix * vec4(vertex, 1.0);
     gl_Position =ProjectionMatrix* vertPos4;
-    //if(scalingKoef<0.0){
-    //    vec4 tPoint = translation(translatePoint.x,translatePoint.y,translatePoint.z)*vec4(vertex,1.0);
-    //    gl_Position = ModelViewProjectionMatrix*tPoint;
-    //}
+    if(scalingKoef<0.0){
+        vec4 tPoint = translation(translatePoint.x,translatePoint.y,translatePoint.z)*vertPos4;
+        gl_Position = ProjectionMatrix*tPoint;
+    }
 }`;
 
 
